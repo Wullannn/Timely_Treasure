@@ -87,6 +87,38 @@ class SigninScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
+                        // Lupa Password
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              // Arahkan ke halaman lupa password
+                            },
+                            child: Text(
+                              'Lupa Password?',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        Divider(thickness: 1, color: Colors.grey[300]),
+                        SizedBox(height: 10),
+                        // Tambahkan teks "Belum punya akun? Daftar di sini"
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Belum punya akun?"),
+                            TextButton(
+                              onPressed: () {
+                                // Arahkan ke halaman registrasi
+                              },
+                              child: Text(
+                                "Daftar di sini",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
