@@ -7,6 +7,7 @@ class Product {
   final double diskon; // Diskon dalam persen (contoh: 0.15 untuk 15%)
   final double rating; // Skala 1 hingga 5
   final List<Color> colors;
+  final String status; // Status pesanan (misalnya: "Selesai", "Dikirim")
   final String description;
 
 
@@ -17,6 +18,7 @@ class Product {
     required this.diskon,
     required this.rating,
     required this.colors,
+    required this.status,
     required this.description,
   });
 
@@ -35,6 +37,7 @@ List<Product> productList = [
     diskon: 0.10,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
 
 
@@ -46,6 +49,7 @@ List<Product> productList = [
     diskon: 0.20,
     rating: 4.9,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -55,6 +59,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -64,6 +69,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.8,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -73,6 +79,7 @@ List<Product> productList = [
     diskon: 0.10,
     rating: 4.9,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -82,6 +89,7 @@ List<Product> productList = [
     diskon: 0.13,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -91,6 +99,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -100,6 +109,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -109,6 +119,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.9,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -118,6 +129,7 @@ List<Product> productList = [
     diskon: 0.14,
     rating: 4.83,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -127,6 +139,7 @@ List<Product> productList = [
     diskon: 0.10,
     rating: 4.82,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -136,6 +149,7 @@ List<Product> productList = [
     diskon: 0.17,
     rating: 4.9,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -145,6 +159,7 @@ List<Product> productList = [
     diskon: 0.20,
     rating: 4.85,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -154,6 +169,7 @@ List<Product> productList = [
     diskon: 0.15,
     rating: 4.8,
     colors: [],
+    status: 'Dikirim',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -163,6 +179,7 @@ List<Product> productList = [
     diskon: 0.18,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
@@ -172,6 +189,7 @@ List<Product> productList = [
     diskon: 0.18,
     rating: 4.8,
     colors: [],
+    status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
 ];

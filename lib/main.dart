@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jam/screens/detail_screen.dart';
 import 'package:jam/screens/profile_screen.dart';
+import 'package:jam/screens/riwayat_pemesanan.dart';
 
 
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
       ),
 
-      home : ProfileScreen(),
+      home: OrderHistoryScreen(),
+      //home : ProfileScreen(),
       //home : ProductDetail(product: {},)
 
     );
