@@ -19,10 +19,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      //home: SigninScreen(),
-      //home : WatchDetailApp(),
-      //home : ProfileScreen(),
-      home : ProductDetail(product: {},)
+
+      home : ProfileScreen(),
+      //home : ProductDetail(product: {},)
 
     );
   }
