@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jamm/screens/search_screen.dart';
 import '../models/product.dart';
+import 'cart_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -10,11 +12,21 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchScreen()),
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartScreen()),
+              );
+            },
           ),
         ],
         backgroundColor: Colors.blueGrey,

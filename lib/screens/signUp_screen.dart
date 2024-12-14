@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jamm/screens/signin_screen.dart';
 
 
 class SignupScreen extends StatelessWidget {
@@ -119,6 +120,10 @@ class SignupScreen extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               // Navigasi ke halaman login
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SigninScreen()),
+                              );
                             },
                             child: Text(
                               'Login di sini',

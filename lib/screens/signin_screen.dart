@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jamm/screens/signUp_screen.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});
@@ -111,6 +112,10 @@ class SigninScreen extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 // Arahkan ke halaman registrasi
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SignupScreen()),
+                                );
                               },
                               child: Text(
                                 "Daftar di sini",
