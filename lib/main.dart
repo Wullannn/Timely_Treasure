@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jamm/screens/signin_screen.dart';
+import 'package:jam/screens/detail_screen.dart';
+import 'package:jam/screens/profile_screen.dart';
+
+
 
 void main() {
   runApp(MyApp());
@@ -16,7 +19,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: SigninScreen(),
+      //home: SigninScreen(),
+      //home : WatchDetailApp(),
+      //home : ProfileScreen(),
+      home : ProductDetail(product: {},)
+
     );
   }
 }
