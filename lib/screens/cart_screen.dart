@@ -2,45 +2,44 @@ import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
 import '../witgets/cartitemtile.dart';
 import '../witgets/cartsummary.dart';
-import 'package:jam/screens/checkout_screen.dart';
+import 'checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  final List<CartItem> cartItems; // Tambahkan properti cartItems
 
+  const CartScreen({super.key, required this.cartItems}); // Sesuaikan required
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
 
+
 class _CartScreenState extends State<CartScreen> {
-  final List<CartItem> _cartItems = [
-    CartItem(
-      name: "Alba",
-      price: "150000",
-      imageAsset: "images/Alba.jpg",
-    ),
-    CartItem(
-      name: "Apple",
-      price: "450000",
-      imageAsset: "images/apple.png",
-    ),
-  ];
+  late List<CartItem> cartItems; // Gunakan late untuk inisialisasi
+
+  @override
+  void initState() {
+    super.initState();
+    cartItems = widget.cartItems; // Ambil data dari widget.cartItems
+  }
 
   int get _selectedItemCount =>
-      _cartItems.where((item) => item.isSelected).length;
+      cartItems.where((item) => item.isSelected).length;
 
   String get _totalPrice {
     double total = 0;
-    for (var item in _cartItems) {
+    for (var item in cartItems) {
       if (item.isSelected) {
-        total +=
-            double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
+        total += double.parse(
+          item.price.replaceAll('.', '').replaceAll(',', '.'),
+        );
       }
     }
     return total.toStringAsFixed(0).replaceAllMapped(
-          RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
           (match) => '${match[1]}.',
-        );
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +68,9 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _cartItems.length,
+              itemCount: cartItems.length,
               itemBuilder: (context, index) {
-                final item = _cartItems[index];
+                final item = cartItems[index];
                 return CartItemTile(
                   item: item,
                   onCheckboxChanged: () {
@@ -89,7 +88,7 @@ class _CartScreenState extends State<CartScreen> {
             onCheckoutPressed: () {
               // Mengirim daftar item yang dipilih ke halaman CheckoutScreen
               final selectedItems =
-                  _cartItems.where((item) => item.isSelected).toList();
+              cartItems.where((item) => item.isSelected).toList();
               Navigator.push(
                 context,
                 MaterialPageRoute(

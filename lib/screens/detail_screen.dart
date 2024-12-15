@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:jam/screens/favorit_screen.dart';
+import 'package:jam/screens/checkout_screen.dart';
+
 import '../models/cart_item.dart';
-import '../models/checkout_item.dart';
 import '../models/product.dart';
-import 'checkout_screen.dart';
+import 'cart_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
+  final List<CartItem> cartItems;
 
-  const ProductDetailScreen({Key? key, required this.product}) : super(key: key);
+  const ProductDetailScreen({Key? key, required this.product, required this.cartItems}) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
@@ -74,8 +77,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               // Harga
               Text(
                 'Harga: Rp${widget.product.harga.toString()}',
-                style: TextStyle(
-                    fontSize: 15, decoration: TextDecoration.lineThrough),
+                style: TextStyle(fontSize: 15, decoration: TextDecoration.lineThrough),
               ),
               SizedBox(height: 5),
 
@@ -137,9 +139,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 selectedItems: [
                                   CartItem(
                                     name: widget.product.nama,
-                                    price: widget.product.price,
+                                    price: widget.product.hargaDiskon.toString(),
                                     imageAsset: widget.product.imageAsset,
-
                                   )
                                 ],
                               ),
@@ -169,7 +170,42 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan aksi untuk keranjang di sini
+                        // Periksa apakah item sudah ada di cartItems
+                        final existingItem =
+                            widget.cartItems.where((item) => item.name == widget.product.nama).isNotEmpty;
+
+                        if (!existingItem) {
+                          // Tambahkan item baru ke keranjang
+                          final newCartItem = CartItem(
+                            name: widget.product.nama,
+                            price: widget.product.hargaDiskon.toString(),
+                            imageAsset: widget.product.imageAsset,
+                            isSelected: true,
+                          );
+                          widget.cartItems.add(newCartItem);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("${widget.product.nama} berhasil ditambahkan ke keranjang!"),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("${widget.product.nama} sudah ada di keranjang!"),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+
+                        // Navigasikan ke CartScreen dengan data terbaru
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CartScreen(cartItems: widget.cartItems),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[300],
@@ -201,8 +237,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         });
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor:
-        selectedColor == colorName ? Colors.grey : buttonColor,
+        backgroundColor: selectedColor == colorName ? Colors.grey : buttonColor,
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),

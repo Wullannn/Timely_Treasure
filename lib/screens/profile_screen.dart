@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:jam/screens/signin_screen.dart';
+import '../providers/provider.dart';
 import 'home_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
 
   @override
   State<ProfileScreen> createState() => ProfileScreenState();
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  bool isSignedIn = true; // Mengatur apakah pengguna sudah signed in
-  String fullName = "";
-  String email = "";
-  int phone = 0;
-  String username = "";
-  String address = ""; // Tambahkan field alamat
-
-  final TextEditingController _addressController = TextEditingController(); // Controller untuk TextField alamat
+  final TextEditingController _addressController = TextEditingController();
 
   @override
   void dispose() {
@@ -27,6 +23,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>().currentUser; // Ambil data pengguna dari provider
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -34,7 +32,6 @@ class ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Navigasi kembali ke HomeScreen
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -52,7 +49,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Stack(
         children: [
-          // Background Image Container
+          // Background Image
           Container(
             height: 90,
             width: double.infinity,
@@ -65,13 +62,11 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-
-          // Profile content area
           Padding(
             padding: const EdgeInsets.only(top: 50, left: 16, right: 16),
             child: Column(
               children: [
-                // Profile Photo with Camera Icon
+                // Foto Profil
                 Align(
                   alignment: Alignment.topCenter,
                   child: Stack(
@@ -82,98 +77,72 @@ class ProfileScreenState extends State<ProfileScreen> {
                         backgroundColor: Colors.grey.shade200,
                         backgroundImage: AssetImage('images/placeholder_image.png'),
                       ),
-                      if (isSignedIn)
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.black,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.edit, color: Colors.white, size: 16),
-                          ),
-                        ),
                     ],
                   ),
                 ),
-
-                // Profile Details
                 SizedBox(height: 24),
                 Divider(color: Colors.blueGrey[100], thickness: 1),
-                buildProfileField(Icons.account_circle, 'Username', username),
-                buildProfileField(Icons.person, 'Nama Lengkap', fullName),
-                buildProfileField(Icons.phone, 'No. Handphone', phone.toString()),
-                buildProfileField(Icons.email, 'Email', email),
-                buildProfileField(Icons.home, 'Alamat', address),
-
-                // Add/Edit Address Section
-                if (isSignedIn) ...[
-                  SizedBox(height: 20),
-                  TextField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Masukkan Alamat Baru',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.location_on),
+                buildProfileField(Icons.account_circle, 'Username', user.username),
+                buildProfileField(Icons.person, 'Nama Lengkap', user.fullName),
+                buildProfileField(Icons.phone, 'No. Handphone', user.phone.toString()),
+                buildProfileField(Icons.email, 'Email', user.email),
+                buildProfileField(Icons.home, 'Alamat', user.address),
+                SizedBox(height: 20),
+                // Input Alamat Baru
+                TextField(
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    labelText: 'Masukkan Alamat Baru',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: Icon(Icons.location_on),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    // Update alamat dengan menggunakan provider
+                    if (_addressController.text.isNotEmpty) {
+                      context.read<UserProvider>().updateAddress(_addressController.text);
+                      _addressController.clear();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    backgroundColor: Colors.blueGrey,
+                  ),
+                  child: Text(
+                    'Simpan Alamat',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Simpan alamat baru
-                      setState(() {
-                        address = _addressController.text.isNotEmpty
-                            ? _addressController.text
-                            : address;
-                        _addressController.clear();
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Alamat berhasil diperbarui!')),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      backgroundColor: Colors.blueGrey,
-                    ),
-                    child: Text(
-                      'Simpan Alamat',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-
-                // Sign Out Button
+                ),
                 SizedBox(height: 24),
-                if (isSignedIn) ...[
-                  ElevatedButton(
-                    onPressed: () {
-                      // Logic untuk Sign Out, arahkan ke Sign In Screen
-                      setState(() {
-                        isSignedIn = false;
-                      });
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SigninScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      backgroundColor: Colors.blueGrey,
-                    ),
-                    child: Text(
-                      'Sign Out',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Logic untuk logout dan navigasi ke SigninScreen
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SigninScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    backgroundColor: Colors.blueGrey,
+                  ),
+                  child: Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                ],
+                ),
               ],
             ),
           ),
@@ -182,6 +151,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Widget untuk menampilkan field profil
   Widget buildProfileField(IconData icon, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),

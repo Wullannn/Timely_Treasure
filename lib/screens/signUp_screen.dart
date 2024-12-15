@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:jam/screens/signin_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/user.dart';
+import '../providers/provider.dart';
+import 'home_screen.dart';
 
-
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
+
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final userNameContriller = TextEditingController();
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5F778C), // tampilan Warna latar belakang abu kebiruan
+      backgroundColor: const Color(0xFF5F778C),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -33,7 +51,7 @@ class SignupScreen extends StatelessWidget {
                     color: Colors.white70,
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -43,89 +61,167 @@ class SignupScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: userNameContriller,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.person),
-                          hintText: 'Nama Lengkap',
+                          prefixIcon: const Icon(Icons.account_circle),
+                          hintText: 'Username',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextField(
+                        controller: fullNameController,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.email),
+                          prefixIcon: const Icon(Icons.person),
+                          hintText: 'Full Name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.phone),
+                          hintText: 'Phone',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email),
                           hintText: 'Email',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.phone),
-                          hintText: 'No. Handphone',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        obscureText: true,
+                        controller: passwordController,
+                        obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.lock),
                           hintText: 'Password',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.lock),
-                          hintText: 'Konfirmasi Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: confirmPasswordController,
+                        obscureText: _obscureConfirmPassword,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.lock),
+                          hintText: 'Confirm Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Logika register
+                            if (passwordController.text !=
+                                confirmPasswordController.text) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Passwords do not match!'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            } else if (userNameContriller.text.isEmpty ||
+                                fullNameController.text.isEmpty ||
+                                emailController.text.isEmpty ||
+                                phoneNumberController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please fill all fields!'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            } else {
+                              final user = UserProfile(
+                                fullName: fullNameController.text,
+                                email: emailController.text,
+                                phoneNumber: phoneNumberController.text,
+                              );
+
+                              // Simpan data ke provider
+                              Provider.of<UserProvider>(context, listen: false).setUser(user);
+
+
+                              // Navigasi ke HomeScreen
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF5F778C),
+                            backgroundColor: const Color(0xFF5F778C),
                           ),
                           child: const Text(
                             'REGISTER',
-                            style: TextStyle(color : Colors.white, fontSize: 16),
-
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Sudah punya akun?'),
-                          SizedBox(width: 5),
+                          const Text('Sudah punya akun?'),
+                          const SizedBox(width: 5),
                           GestureDetector(
                             onTap: () {
                               // Navigasi ke halaman login
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SigninScreen()),
+                                MaterialPageRoute(
+                                    builder: (context) => const SigninScreen()),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'Login di sini',
                               style: TextStyle(
                                 color: Colors.blue,

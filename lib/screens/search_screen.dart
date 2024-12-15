@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../witgets/searchhistory.dart';
+import 'detail_screen.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -123,15 +124,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   subtitle: Text("Rp ${product.harga.toStringAsFixed(0)}"),
                   onTap: () {
-                    // Aksi ketika produk dipilih
-                    print("Produk dipilih: ${product.nama}");
+                    // Navigasi ke halaman detail produk
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailScreen(product: product, cartItems: [],),
+                      ),
+                    );
                   },
                 );
               },
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }
