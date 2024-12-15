@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jamm/screens/signin_screen.dart';
+import 'package:jam/screens/signin_screen.dart';
 
 
 class SignupScreen extends StatelessWidget {

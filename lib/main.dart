@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jamm/screens/cart_screen.dart';
-import 'package:jamm/screens/home_screen.dart';
-import 'package:jamm/screens/search_screen.dart';
-import 'package:jamm/screens/signin_screen.dart';
-import 'package:jamm/screens/favorit_screen.dart';
-import 'package:jamm/screens/checkout_screen.dart';
+import 'package:jam/screens/profile_screen.dart';
+import 'package:jam/screens/riwayat_pemesanan.dart';
+import 'package:jam/screens/signin_screen.dart';
+import 'package:jam/screens/cart_screen.dart';
+import 'package:jam/screens/home_screen.dart';
+import 'package:jam/screens/search_screen.dart';
+import 'package:jam/screens/signin_screen.dart';
+import 'package:jam/screens/favorit_screen.dart';
+import 'package:jam/screens/checkout_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,23 +24,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-<<<<<<< Updated upstream
-      home: SigninScreen(),
-      // home:CheckoutScreen(),
-      // home:FavoritScreen(),
-      //home: CartScreen(),
-      //home: SearchScreen(),
-      //home: HomeScreen(),
-=======
+
       // home: SigninScreen(),
+      // home:FavoritScreen(),
+      //home: HomeScreen(),
       // home: CheckoutScreen(), diakses melalui cartscreen soalnya kode ini dinamis bukan statis
-      home: FavoritScreen(),
       // home: CartScreen(),
       //home: SearchScreen(),
-      // home: HomeScreen(),
+       home: HomeScreen(),
       // home: ProfileScreen(),
       //home : OrderHistoryScreen()
->>>>>>> Stashed changes
     );
   }
 }
