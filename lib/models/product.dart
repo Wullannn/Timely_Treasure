@@ -9,6 +9,7 @@ class Product {
   final List<Color> colors;
   final String status; // Status pesanan (misalnya: "Selesai", "Dikirim")
   final String description;
+  var price;
 
 
   Product({

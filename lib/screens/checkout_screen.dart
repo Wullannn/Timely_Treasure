@@ -13,7 +13,7 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   String?
-      _selectedPaymentMethod; 
+  _selectedPaymentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               SizedBox(height: 8),
               ...widget.selectedItems.map(
-                (item) => ListTile(
+                    (item) => ListTile(
                   leading: Image.asset(
                     item.imageAsset,
                     width: 50,
@@ -107,7 +107,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     showDialog(
                       context: context,
                       barrierDismissible:
-                          false, 
+                      false,
                       builder: (context) => Dialog(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -136,7 +136,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                     );
 
-                 
+
                     Future.delayed(Duration(seconds: 5), () {
                       Navigator.pushReplacement(
                         context,
@@ -158,7 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   iconColor: Colors.green,
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   textStyle:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],

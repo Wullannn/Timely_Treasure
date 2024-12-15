@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
+import '../models/cart_item.dart';
+import '../models/checkout_item.dart';
 import '../models/product.dart';
-import 'home_screen.dart';
+import 'checkout_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -14,6 +15,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool isFavorite = false; // Status favorit, dimulai dengan false
+  String? selectedColor; // Menyimpan warna yang dipilih
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +26,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            // Menggunakan Navigator.pushReplacement untuk kembali ke HomeScreen
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()), // Ganti dengan halaman HomeScreen yang sesuai
-            );
+            Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
             icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border, // Ubah ikon berdasarkan status favorit
+              isFavorite ? Icons.favorite : Icons.favorite_border,
               color: Colors.black,
             ),
             onPressed: () {
               setState(() {
-                isFavorite = !isFavorite; // Mengubah status favorit
+                isFavorite = !isFavorite;
               });
             },
           ),
@@ -100,56 +98,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Tambahkan aksi pilih warna hitam
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Text(
-                      'Hitam',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
+                  _buildColorButton('Hitam', Colors.black, Colors.white),
                   SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Tambahkan aksi pilih warna putih
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Text(
-                      'Putih',
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ),
+                  _buildColorButton('Putih', Colors.white, Colors.black),
                   SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Tambahkan aksi pilih warna biru
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Text(
-                      'Biru',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
+                  _buildColorButton('Biru', Colors.blue, Colors.white),
                 ],
               ),
               Divider(color: Colors.grey[300], thickness: 1),
@@ -176,7 +129,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan aksi pembelian di sini
+                        if (selectedColor != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CheckoutScreen(
+                                selectedItems: [
+                                  CartItem(
+                                    name: widget.product.nama,
+                                    price: widget.product.price,
+                                    imageAsset: widget.product.imageAsset,
+
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Pilih warna terlebih dahulu!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -213,6 +189,28 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildColorButton(String colorName, Color buttonColor, Color textColor) {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          selectedColor = colorName;
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor:
+        selectedColor == colorName ? Colors.grey : buttonColor,
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+      ),
+      child: Text(
+        colorName,
+        style: TextStyle(fontSize: 16, color: textColor),
       ),
     );
   }

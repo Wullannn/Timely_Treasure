@@ -4,6 +4,8 @@ class CartItem {
   final String imageAsset;
   bool isSelected;
 
+  var harga;
+
   CartItem({
     required this.name,
     required this.price,

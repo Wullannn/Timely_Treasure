@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
        //home:FavoritScreen(),
       //home: CartScreen(),
       //home: SearchScreen(),
-       //home: HomeScreen(),
-      home : ProfileScreen(),
+       home: HomeScreen(),
+      //home : ProfileScreen(),
        //home : OrderHistoryScreen()
     );
   }
