@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
 import '../witgets/cartitemtile.dart';
 import '../witgets/cartsummary.dart';
+import 'package:jam/screens/checkout_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -31,13 +32,14 @@ class _CartScreenState extends State<CartScreen> {
     double total = 0;
     for (var item in _cartItems) {
       if (item.isSelected) {
-        total += double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
+        total +=
+            double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
       }
     }
     return total.toStringAsFixed(0).replaceAllMapped(
-      RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
+          RegExp(r'(\d)(?=(\d{3})+(?!\d))'),
           (match) => '${match[1]}.',
-    );
+        );
   }
 
   @override
@@ -85,7 +87,17 @@ class _CartScreenState extends State<CartScreen> {
             selectedItemCount: _selectedItemCount,
             totalPrice: _totalPrice,
             onCheckoutPressed: () {
-              // Checkout action
+              // Mengirim daftar item yang dipilih ke halaman CheckoutScreen
+              final selectedItems =
+                  _cartItems.where((item) => item.isSelected).toList();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckoutScreen(
+                    selectedItems: selectedItems,
+                  ),
+                ),
+              );
             },
           ),
         ],
