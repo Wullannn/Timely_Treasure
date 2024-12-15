@@ -90,7 +90,6 @@ class _SigninScreenState extends State<SigninScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Logika login di sini
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueGrey,
@@ -114,6 +113,10 @@ class _SigninScreenState extends State<SigninScreen> {
                             Text("Belum punya akun?"),
                             TextButton(
                               onPressed: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => SignupScreen()),
+                                // );
                               },
                               child: Text(
                                 "Daftar di sini",
