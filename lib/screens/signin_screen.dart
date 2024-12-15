@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:jamm/screens/signUp_screen.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -115,11 +114,6 @@ class _SigninScreenState extends State<SigninScreen> {
                             Text("Belum punya akun?"),
                             TextButton(
                               onPressed: () {
-                                // Arahkan ke halaman registrasi
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => SignupScreen()),
-                                // );
                               },
                               child: Text(
                                 "Daftar di sini",
