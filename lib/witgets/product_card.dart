@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 
+
 class ProductCard extends StatelessWidget {
   final Product product;
 
@@ -21,7 +22,7 @@ class ProductCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 product.imageAsset,
-                height: 120,
+                height: 750,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -45,6 +46,44 @@ class ProductCard extends StatelessWidget {
                       fontSize: 14,
                       color: Colors.grey[600],
                     ),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Handle buy now action
+                            },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white, backgroundColor: Colors.black,
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            child: Text('Beli Sekarang'),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.favorite_border),
+                        onPressed: () {
+                          // Handle favorite action
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white, backgroundColor: Colors.grey,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    ),
+                    child: Text('Kembali'),
                   ),
                 ],
               ),
