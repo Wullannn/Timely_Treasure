@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
       ),
       // home: SigninScreen(),
       // home:CheckoutScreen(),
-      // home:FavoritScreen(),
+       home:FavoritScreen(),
       //home: CartScreen(),
       //home: SearchScreen(),
-       home: HomeScreen(),
+       //home: HomeScreen(),
       //home : ProfileScreen(),
        //home : OrderHistoryScreen()
     );
