@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
+import 'home_screen.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Product product;
 
   const ProductDetailScreen({Key? key, required this.product}) : super(key: key);
+
+  @override
+  _ProductDetailScreenState createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  bool isFavorite = false; // Status favorit, dimulai dengan false
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +24,23 @@ class ProductDetailScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            // Menggunakan Navigator.pushReplacement untuk kembali ke HomeScreen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()), // Ganti dengan halaman HomeScreen yang sesuai
+            );
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite_border, color: Colors.black),
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border, // Ubah ikon berdasarkan status favorit
+              color: Colors.black,
+            ),
             onPressed: () {
-              // Tambahkan aksi untuk tombol favorit
+              setState(() {
+                isFavorite = !isFavorite; // Mengubah status favorit
+              });
             },
           ),
         ],
@@ -39,7 +56,7 @@ class ProductDetailScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    product.imageAsset,
+                    widget.product.imageAsset,
                     height: 250,
                     width: 250,
                     fit: BoxFit.cover,
@@ -50,7 +67,7 @@ class ProductDetailScreen extends StatelessWidget {
 
               // Nama Produk
               Text(
-                product.nama,
+                widget.product.nama,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Divider(color: Colors.grey[300], thickness: 1),
@@ -58,7 +75,7 @@ class ProductDetailScreen extends StatelessWidget {
 
               // Harga
               Text(
-                'Harga: Rp${product.harga.toString()}',
+                'Harga: Rp${widget.product.harga.toString()}',
                 style: TextStyle(
                     fontSize: 15, decoration: TextDecoration.lineThrough),
               ),
@@ -66,7 +83,7 @@ class ProductDetailScreen extends StatelessWidget {
 
               // Diskon
               Text(
-                'Harga Diskon: Rp${product.hargaDiskon.toString()}',
+                'Harga Diskon: Rp${widget.product.hargaDiskon.toString()}',
                 style: TextStyle(fontSize: 17, color: Colors.red),
               ),
               Divider(color: Colors.grey[300], thickness: 1),
@@ -145,7 +162,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Text(
-                product.description,
+                widget.product.description,
                 style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 textAlign: TextAlign.justify,
               ),

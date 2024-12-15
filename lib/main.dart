@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jam/screens/profile_screen.dart';
+import 'package:jam/screens/riwayat_pemesanan.dart';
 import 'package:jam/screens/signin_screen.dart';
 import 'package:jam/screens/cart_screen.dart';
 import 'package:jam/screens/home_screen.dart';
@@ -27,7 +29,9 @@ class MyApp extends StatelessWidget {
       // home:FavoritScreen(),
       //home: CartScreen(),
       //home: SearchScreen(),
-      home: HomeScreen(),
+       home: HomeScreen(),
+      //home : ProfileScreen(),
+       //home : OrderHistoryScreen()
     );
   }
 }
