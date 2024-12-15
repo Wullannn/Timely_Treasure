@@ -24,14 +24,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
+
       // home: SigninScreen(),
-      // home:CheckoutScreen(),
       // home:FavoritScreen(),
-      //home: CartScreen(),
+      //home: HomeScreen(),
+      // home: CheckoutScreen(), diakses melalui cartscreen soalnya kode ini dinamis bukan statis
+      // home: CartScreen(),
       //home: SearchScreen(),
        home: HomeScreen(),
-      //home : ProfileScreen(),
-       //home : OrderHistoryScreen()
+      // home: ProfileScreen(),
+      //home : OrderHistoryScreen()
     );
   }
 }
