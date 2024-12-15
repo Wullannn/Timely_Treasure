@@ -70,7 +70,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'JAM TANGAN PRIA ALEXANDRAA CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
   Product(
     nama: "AudemarsPiguet",
