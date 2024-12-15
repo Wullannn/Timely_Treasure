@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 
-class FavoritScreen extends StatelessWidget {
-  // Daftar produk favorit yang sudah ditentukan secara statis
+class FavoritScreen extends StatefulWidget {
+  const FavoritScreen({super.key});
+
+  @override
+  _FavoritScreenState createState() => _FavoritScreenState();
+}
+
+class _FavoritScreenState extends State<FavoritScreen> {
   final List<Product> favoritProducts = [
     productList[0], // Alba
     productList[1], // Apple
@@ -24,6 +30,7 @@ class FavoritScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = favoritProducts[index];
                 return Card(
+                  key: ValueKey(product.nama),
                   margin: EdgeInsets.all(10),
                   elevation: 5,
                   child: ListTile(
@@ -38,10 +45,13 @@ class FavoritScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(Icons.remove_circle, color: Colors.red),
                       onPressed: () {
-                        // Hanya sebagai contoh jika produk ingin dihapus
+                        setState(() {
+                          favoritProducts.removeAt(index);
+                        });
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                               '${product.nama} telah dihapus dari favorit!'),
+                          duration: Duration(seconds: 2),
                         ));
                       },
                     ),
