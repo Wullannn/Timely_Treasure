@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jamm/screens/signUp_screen.dart';
+import 'package:jam/screens/signUp_screen.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({super.key});
