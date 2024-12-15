@@ -11,10 +11,19 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = true; // Mengatur apakah pengguna sudah signed in
-  String fullName = "John Doe";
-  String email = "johndoe@example.com";
-  int phone = 1234567890;
-  String username = "johndoe";
+  String fullName = "";
+  String email = "";
+  int phone = 0;
+  String username = "";
+  String address = ""; // Tambahkan field alamat
+
+  final TextEditingController _addressController = TextEditingController(); // Controller untuk TextField alamat
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +37,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             // Navigasi kembali ke HomeScreen
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()), // Ganti dengan halaman HomeScreen
+              MaterialPageRoute(builder: (context) => HomeScreen()),
             );
           },
         ),
@@ -45,21 +54,21 @@ class ProfileScreenState extends State<ProfileScreen> {
         children: [
           // Background Image Container
           Container(
-            height: 200,
+            height: 90,
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
                   'https://akcdn.detik.net.id/visual/2023/09/13/apple-watch_169.png?w=400&q=90',
                 ),
-                fit: BoxFit.cover, // Menyesuaikan gambar agar memenuhi container
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
           // Profile content area
           Padding(
-            padding: const EdgeInsets.only(top: 160, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 50, left: 16, right: 16),
             child: Column(
               children: [
                 // Profile Photo with Camera Icon
@@ -91,8 +100,51 @@ class ProfileScreenState extends State<ProfileScreen> {
                 Divider(color: Colors.blueGrey[100], thickness: 1),
                 buildProfileField(Icons.account_circle, 'Username', username),
                 buildProfileField(Icons.person, 'Nama Lengkap', fullName),
-                buildProfileField(Icons.phone, 'No. Hanphone', phone.toString()),
+                buildProfileField(Icons.phone, 'No. Handphone', phone.toString()),
                 buildProfileField(Icons.email, 'Email', email),
+                buildProfileField(Icons.home, 'Alamat', address),
+
+                // Add/Edit Address Section
+                if (isSignedIn) ...[
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Masukkan Alamat Baru',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      prefixIcon: Icon(Icons.location_on),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Simpan alamat baru
+                      setState(() {
+                        address = _addressController.text.isNotEmpty
+                            ? _addressController.text
+                            : address;
+                        _addressController.clear();
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Alamat berhasil diperbarui!')),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      backgroundColor: Colors.blueGrey,
+                    ),
+                    child: Text(
+                      'Simpan Alamat',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
 
                 // Sign Out Button
                 SizedBox(height: 24),
@@ -115,7 +167,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                     child: Text(
                       'Sign Out',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -136,7 +188,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         children: [
           Icon(icon, color: Colors.blueGrey),
-          SizedBox(width: 16),
+          SizedBox(width: 12),
           Text(
             '$label:',
             style: TextStyle(

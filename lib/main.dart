@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
       ),
       // home: SigninScreen(),
-      // home:CheckoutScreen(),
-       home:FavoritScreen(),
+      //home:CheckoutScreen(selectedItems: [],),
+       //home:FavoritScreen(),
       //home: CartScreen(),
       //home: SearchScreen(),
        //home: HomeScreen(),
-      //home : ProfileScreen(),
+      home : ProfileScreen(),
        //home : OrderHistoryScreen()
     );
   }
