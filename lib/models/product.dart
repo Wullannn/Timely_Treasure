@@ -182,14 +182,4 @@ List<Product> productList = [
     status: 'Selesai',
     description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
   ),
-  Product(
-    nama: "Jam",
-    imageAsset: "images/jam.jpeg",
-    harga: 880000,
-    diskon: 0.18,
-    rating: 4.8,
-    colors: [],
-    status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
-  ),
 ];
