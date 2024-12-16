@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../witgets/searchhistory.dart';
 
-
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -14,7 +13,6 @@ class _SearchScreenState extends State<SearchScreen> {
   final List<String> _searchHistory = [];
   List<Product> _filteredProducts = productList;
 
-
   void _addToSearchHistory(String query) {
     if (query.isNotEmpty && !_searchHistory.contains(query)) {
       setState(() {
@@ -23,13 +21,11 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-
   void _removeFromSearchHistory(String query) {
     setState(() {
       _searchHistory.remove(query);
     });
   }
-
 
   void _filterProducts(String query) {
     setState(() {
@@ -101,22 +97,45 @@ class _SearchScreenState extends State<SearchScreen> {
             // Menampilkan daftar produk
             child: _filteredProducts.isEmpty
                 ? Center(
-              child: Text(
-                "Tidak ada produk ditemukan.",
-                style: TextStyle(color: Colors.grey),
-              ),
-            )
+                    child: Text(
+                      "Tidak ada produk ditemukan.",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  )
                 : ListView.builder(
-              itemCount: _filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = _filteredProducts[index];
-                return ListTile(
-                  leading: Image.asset(
-                    product.imageAsset,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = _filteredProducts[index];
+                      return ListTile(
+                        leading: Image.asset(
+                          product.imageAsset,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(
+                          product.nama,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle:
+                            Text("Rp ${product.harga.toStringAsFixed(0)}"),
+                        onTap: () {
+                          // Navigasi ke halaman detail produk
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailScreen(
+                                product: product,
+                                cartItems: [],
+                                favoritItems: [],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
+<<<<<<< Updated upstream:lib/screens/search_screen.dart
                   title: Text(
                     product.nama,
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -129,6 +148,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
             ),
+=======
+>>>>>>> Stashed changes:lib/Secreen/search_screen.dart
           ),
         ],
       )
