@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:jam/screens/signUp_screen.dart';
 
-class SigninScreen extends StatelessWidget {
+class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
+
+  @override
+  _SigninScreenState createState() => _SigninScreenState();
+}
+
+class _SigninScreenState extends State<SigninScreen> {
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +65,26 @@ class SigninScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 15),
-                        // Input Password
+                        // Input Password dengan fitur lihat password
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'Password',
                             border: OutlineInputBorder(),
                             prefixIcon: Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                         ),
                         SizedBox(height: 15),
                         // Tombol Login
@@ -88,20 +107,6 @@ class SigninScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        // Lupa Password
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              // Arahkan ke halaman lupa password
-                            },
-                            child: Text(
-                              'Lupa Password?',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        ),
                         Divider(thickness: 1, color: Colors.grey[300]),
                         SizedBox(height: 10),
                         // Tambahkan teks "Belum punya akun? Daftar di sini"
@@ -114,7 +119,8 @@ class SigninScreen extends StatelessWidget {
                                 // Arahkan ke halaman registrasi
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SignupScreen()),
+                                  MaterialPageRoute(
+                                      builder: (context) => SignupScreen()),
                                 );
                               },
                               child: Text(
