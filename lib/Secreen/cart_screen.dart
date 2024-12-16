@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
-import '../witgets/cartitemtile.dart';
-import '../witgets/cartsummary.dart';
-import 'checkout_screen.dart';
+import '../widgets/cartitemitile.dart';
+import '../widgets/cartsummary.dart';
+import 'checkout.dart';
+
 
 class CartScreen extends StatefulWidget {
   final List<CartItem> cartItems; // Tambahkan properti cartItems

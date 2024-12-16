@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jam/screens/signin_screen.dart';
+import 'package:jam/Secreen/signIn_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
-import '../providers/provider.dart';
+import '../provider/provider.dart';
 import 'home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -181,7 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               final user = UserProfile(
                                 fullName: fullNameController.text,
                                 email: emailController.text,
-                                phoneNumber: phoneNumberController.text,
+                                phone: phoneNumberController.text,
                               );
 
                               // Simpan data ke provider
@@ -192,7 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => SigninScreen(),
                                 ),
                               );
                             }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jam/screens/signUp_screen.dart';
+import 'package:jam/Secreen/signUp_screen.dart';
+
+import 'home_screen.dart';
+
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -92,7 +95,12 @@ class _SigninScreenState extends State<SigninScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Logika login di sini
+                              // Navigasi ke Home Screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueGrey,

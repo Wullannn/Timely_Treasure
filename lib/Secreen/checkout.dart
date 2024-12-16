@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/cart_item.dart';
-import 'package:jam/screens/home_screen.dart';
+import 'home_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final List<CartItem> selectedItems;

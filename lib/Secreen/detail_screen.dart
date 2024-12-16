@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jam/screens/favorit_screen.dart';
-import 'package:jam/screens/checkout_screen.dart';
-
 import '../models/cart_item.dart';
 import '../models/product.dart';
 import 'cart_screen.dart';
+import 'checkout.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;

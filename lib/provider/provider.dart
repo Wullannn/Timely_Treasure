@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jam/models/user.dart';
+import '../models/user.dart';
 
 class User {
   String username;
   String fullName;
   String email;
-  int phone;
+  String phone;
   String address;
 
   User({
@@ -22,7 +22,7 @@ class UserProvider with ChangeNotifier {
     username: '',
     fullName: '',
     email: '',
-    phone: 0,
+    phone: '',
   );
 
   User get currentUser => _currentUser;
@@ -40,4 +40,6 @@ class UserProvider with ChangeNotifier {
   void setUser(UserProfile user) {
 
   }
+
+  void updateProfile({required String username, required String fullName, required String phone, required String email, required String address}) {}
 }

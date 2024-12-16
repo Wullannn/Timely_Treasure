@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../witgets/searchhistory.dart';
+import '../widgets/searchhistory.dart';
 import 'detail_screen.dart';
 
 

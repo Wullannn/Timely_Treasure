@@ -7,9 +7,8 @@ class Product {
   final double diskon; // Diskon dalam persen (contoh: 0.15 untuk 15%)
   final double rating; // Skala 1 hingga 5
   final List<Color> colors;
-  final String status; // Status pesanan (misalnya: "Selesai", "Dikirim")
+  late final String status; // Status pesanan (misalnya: "Selesai", "Dikirim")
   final String description;
-  var price;
 
 
   Product({
