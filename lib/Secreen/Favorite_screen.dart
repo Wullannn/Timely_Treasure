@@ -1,64 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/product.dart';
+import '../provider/favorit_provider.dart'; 
 
-class FavoritScreen extends StatefulWidget {
-  const FavoritScreen({super.key});
-
-  @override
-  _FavoritScreenState createState() => _FavoritScreenState();
-}
-
-class _FavoritScreenState extends State<FavoritScreen> {
-  final List<Product> favoritProducts = [
-    productList[0], // Alba
-    productList[1], // Apple
-    productList[4], // AudemarsPiguet
-    productList[7], // Casio
-  ];
-
+class FavoritScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final favoritItems = Provider.of<FavoritProvider>(context).favoritItems;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorit Produk'),
+        title: Text('Favorit'),
         backgroundColor: Colors.blueGrey,
       ),
-      body: favoritProducts.isEmpty
-          ? Center(child: Text('Belum ada produk favorit.'))
+      body: favoritItems.isEmpty
+          ? Center(
+              child: Text(
+                'Tidak ada produk favorit',
+                style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+            )
           : ListView.builder(
-        itemCount: favoritProducts.length,
-        itemBuilder: (context, index) {
-          final product = favoritProducts[index];
-          return Card(
-            key: ValueKey(product.nama),
-            margin: EdgeInsets.all(10),
-            elevation: 5,
-            child: ListTile(
-              leading: Image.asset(
-                product.imageAsset,
-                width: 50,
-                height: 50,
-              ),
-              title: Text(product.nama),
-              subtitle: Text(
-                  'Harga: Rp${product.hargaDiskon} - Rating: ${product.rating}⭐'),
-              trailing: IconButton(
-                icon: Icon(Icons.remove_circle, color: Colors.red),
-                onPressed: () {
-                  setState(() {
-                    favoritProducts.removeAt(index);
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                        '${product.nama} telah dihapus dari favorit!'),
-                    duration: Duration(seconds: 2),
-                  ));
-                },
-              ),
+              itemCount: favoritItems.length,
+              itemBuilder: (context, index) {
+                final product = favoritItems[index];
+                return Card(
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: Image.network(
+                      product.imageAsset,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(product.nama),
+                    subtitle: Text('Rp${product.hargaDiskon.toString()}'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        Provider.of<FavoritProvider>(context, listen: false)
+                            .removeFavorite(product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${product.nama} dihapus dari favorit'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

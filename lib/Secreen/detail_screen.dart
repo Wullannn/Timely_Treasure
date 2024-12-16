@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:jam/provider/favorit_provider.dart'; 
 import '../models/cart_item.dart';
 import '../models/product.dart';
 import 'cart_screen.dart';
@@ -8,15 +10,27 @@ class ProductDetailScreen extends StatefulWidget {
   final Product product;
   final List<CartItem> cartItems;
 
-  const ProductDetailScreen({Key? key, required this.product, required this.cartItems}) : super(key: key);
+  const ProductDetailScreen({
+    Key? key,
+    required this.product,
+    required this.cartItems,
+  }) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  bool isFavorite = false; // Status favorit, dimulai dengan false
-  String? selectedColor; // Menyimpan warna yang dipilih
+  bool isFavorite = false; 
+  String? selectedColor; 
+
+  @override
+  void initState() {
+    super.initState();
+    final favoritProvider =
+        Provider.of<FavoritProvider>(context, listen: false);
+    isFavorite = favoritProvider.isFavorite(widget.product);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +51,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               color: Colors.black,
             ),
             onPressed: () {
+              final favoritProvider =
+                  Provider.of<FavoritProvider>(context, listen: false);
               setState(() {
+                if (isFavorite) {
+                  favoritProvider.removeFavorite(widget.product);
+                } else {
+                  favoritProvider.addFavorite(widget.product);
+                }
                 isFavorite = !isFavorite;
               });
             },
@@ -50,7 +71,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Gambar Produk
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
@@ -63,38 +83,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Nama Produk
               Text(
                 widget.product.nama,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Divider(color: Colors.grey[300], thickness: 1),
               SizedBox(height: 10),
-
-              // Harga
               Text(
                 'Harga: Rp${widget.product.harga.toString()}',
-                style: TextStyle(fontSize: 15, decoration: TextDecoration.lineThrough),
+                style: TextStyle(
+                    fontSize: 15, decoration: TextDecoration.lineThrough),
               ),
               SizedBox(height: 5),
-
-              // Diskon
               Text(
                 'Harga Diskon: Rp${widget.product.hargaDiskon.toString()}',
                 style: TextStyle(fontSize: 17, color: Colors.red),
               ),
               Divider(color: Colors.grey[300], thickness: 1),
               SizedBox(height: 20),
-
-              // Warna Tersedia
               Text(
                 'Warna Tersedia',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
-
-              // Tombol Warna
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -107,8 +118,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               Divider(color: Colors.grey[300], thickness: 1),
               SizedBox(height: 20),
-
-              // Deskripsi
               Text(
                 'Deskripsi',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -121,8 +130,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               Divider(color: Colors.grey[300], thickness: 1),
               SizedBox(height: 30),
-
-              // Tombol Beli Sekarang dan Keranjang
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +144,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 selectedItems: [
                                   CartItem(
                                     name: widget.product.nama,
-                                    price: widget.product.hargaDiskon.toString(),
+                                    price:
+                                        widget.product.hargaDiskon.toString(),
                                     imageAsset: widget.product.imageAsset,
                                   )
                                 ],
@@ -155,7 +163,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -168,12 +177,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
-                        // Periksa apakah item sudah ada di cartItems
-                        final existingItem =
-                            widget.cartItems.where((item) => item.name == widget.product.nama).isNotEmpty;
+                        final existingItem = widget.cartItems
+                            .where((item) => item.name == widget.product.nama)
+                            .isNotEmpty;
 
                         if (!existingItem) {
-                          // Tambahkan item baru ke keranjang
                           final newCartItem = CartItem(
                             name: widget.product.nama,
                             price: widget.product.hargaDiskon.toString(),
@@ -184,24 +192,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("${widget.product.nama} berhasil ditambahkan ke keranjang!"),
+                              content: Text(
+                                  "${widget.product.nama} berhasil ditambahkan ke keranjang!"),
                               duration: Duration(seconds: 2),
                             ),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("${widget.product.nama} sudah ada di keranjang!"),
+                              content: Text(
+                                  "${widget.product.nama} sudah ada di keranjang!"),
                               duration: Duration(seconds: 2),
                             ),
                           );
                         }
 
-                        // Navigasikan ke CartScreen dengan data terbaru
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CartScreen(cartItems: widget.cartItems),
+                            builder: (context) =>
+                                CartScreen(cartItems: widget.cartItems),
                           ),
                         );
                       },
@@ -227,7 +237,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _buildColorButton(String colorName, Color buttonColor, Color textColor) {
+  Widget _buildColorButton(
+      String colorName, Color buttonColor, Color textColor) {
     return ElevatedButton(
       onPressed: () {
         setState(() {

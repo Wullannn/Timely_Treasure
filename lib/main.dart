@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jam/provider/provider.dart';
+import 'package:jam/provider/favorit_provider.dart';
 import 'package:provider/provider.dart';
-// Import screens
 import 'Secreen/home_screen.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => FavoritProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: HomeScreen(), // Langsung menampilkan HomeScreen
+      home: HomeScreen(),
     );
   }
 }
