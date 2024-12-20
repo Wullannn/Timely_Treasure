@@ -1,240 +1,234 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jam/Secreen/signIn_screen.dart';
-import 'package:provider/provider.dart';
-import '../models/user.dart';
-import '../provider/provider.dart';
-import 'home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  SignUpScreen({super.key});
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  final userNameContriller = TextEditingController();
-  final fullNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nomorController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
+  String _errorText = '';
   bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
+
+  void _signup() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String name = _nameController.text.trim();
+    final String username = _usernameController.text.trim();
+    final String email = _emailController.text.trim();
+    final String notelpon = _nomorController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (password.length < 8 ||
+        !password.contains(RegExp(r'[A-Z]')) ||
+        !password.contains(RegExp(r'[a-z]')) ||
+        !password.contains(RegExp(r'[0-9]')) ||
+        !password.contains(RegExp(r'[!@#%^&*()-_=+{}]'))) {
+      setState(() {
+        _errorText =
+        'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#%^&*()-_=+{}]';
+      });
+      return;
+    }
+
+    if (name.isNotEmpty && username.isNotEmpty && email.isNotEmpty && notelpon.isNotEmpty && password.isNotEmpty) {
+      final encrypt.Key key = encrypt.Key.fromUtf8('my32lengthsupersecretnooneknows!'); // Kunci tetap (32 karakter)
+      final iv = encrypt.IV.fromLength(16);
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      // Enkripsi data
+      final encryptedName = encrypter.encrypt(name, iv: iv);
+      final encryptedUsername = encrypter.encrypt(username, iv: iv);
+      final encryptedEmail = encrypter.encrypt(email, iv: iv);
+      final encryptedNotelpon = encrypter.encrypt(notelpon, iv: iv);
+      final encryptedPassword = encrypter.encrypt(password, iv: iv);
+
+      // Simpan data terenkripsi di SharedPreferences
+      prefs.setString('name', encryptedName.base64);
+      prefs.setString('username', encryptedUsername.base64);
+      prefs.setString('email', encryptedEmail.base64);
+      prefs.setString('notelpon', encryptedNotelpon.base64);
+      prefs.setString('password', encryptedPassword.base64);
+      prefs.setString('iv', iv.base64); // Simpan IV
+      prefs.setString('key', key.base64);
+
+      // Arahkan ke SignInScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SigninScreen()),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _nomorController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5F778C),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Timely Treasure',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue, Colors.blueGrey],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Daftar dan Mulai Belanja Jam Tangan Favorit Anda!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: userNameContriller,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.account_circle),
-                          hintText: 'Username',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Timely Treasure',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: fullNameController,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person),
-                          hintText: 'Full Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Daftar dan Mulai Belanja Jam Tangan Favorit Anda!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blueGrey,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: phoneNumberController,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.phone),
-                          hintText: 'Phone',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 20),
+                        // Nama Lengkap
+                        TextFormField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            labelText: 'Nama Lengkap',
+                            border: OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.person),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.email),
-                          hintText: 'Email',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 20),
+                        // Username
+                        TextFormField(
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                            labelText: 'Username',
+                            border: OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.account_box),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: passwordController,
-                        obscureText: _obscurePassword,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.lock),
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
+                        const SizedBox(height: 20),
+                        // Email
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.email),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        controller: confirmPasswordController,
-                        obscureText: _obscureConfirmPassword,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.lock),
-                          hintText: 'Confirm Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirmPassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirmPassword =
-                                !_obscureConfirmPassword;
-                              });
-                            },
+                        const SizedBox(height: 20),
+                        // No Telpon
+                        TextFormField(
+                          controller: _nomorController,
+                          decoration: InputDecoration(
+                            labelText: 'No Telpon',
+                            border: OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.phone),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (passwordController.text !=
-                                confirmPasswordController.text) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Passwords do not match!'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            } else if (userNameContriller.text.isEmpty ||
-                                fullNameController.text.isEmpty ||
-                                emailController.text.isEmpty ||
-                                phoneNumberController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please fill all fields!'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            } else {
-                              final user = UserProfile(
-                                fullName: fullNameController.text,
-                                email: emailController.text,
-                                phone: phoneNumberController.text,
-                              );
-
-                              // Simpan data ke provider
-                              Provider.of<UserProvider>(context, listen: false).setUser(user);
-
-
-                              // Navigasi ke HomeScreen
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SigninScreen(),
-                                ),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF5F778C),
-                          ),
-                          child: const Text(
-                            'REGISTER',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Sudah punya akun?'),
-                          const SizedBox(width: 5),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigasi ke halaman login
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const SigninScreen()),
-                              );
-                            },
-                            child: const Text(
-                              'Login di sini',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
+                        const SizedBox(height: 20),
+                        // Password
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            errorText: _errorText.isNotEmpty ? _errorText : null,
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                          obscureText: _obscurePassword,
+                        ),
+                        const SizedBox(height: 20),
+                        // Tombol Register
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueGrey,
+                            foregroundColor: Colors.black,
+                          ),
+                          onPressed: _signup,
+                          child: const Text('Register'),
+                        ),
+                        const SizedBox(height: 8),
+                        // RichText untuk Login
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Sudah punya akun?'),
+                            const SizedBox(width: 5),
+                            GestureDetector(
+                              onTap: () {
+                                // Navigasi ke halaman login
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const SigninScreen()
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Login di sini',
+                                style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),

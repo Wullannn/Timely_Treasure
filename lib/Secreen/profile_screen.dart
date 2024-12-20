@@ -1,73 +1,100 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jam/Secreen/signIn_screen.dart';
-import 'package:provider/provider.dart';
-import '../provider/provider.dart';
-import 'home_screen.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jam/Secreen/signIn_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+class _ProfileScreenState extends State<ProfileScreen> {
+  // Variabel profil
+  String _imageFile = '';
+  final picker = ImagePicker();
 
-  bool isSignedIn = true;
-  String profileImage = 'images/placeholder_image.png';
+  // Data profil terenkripsi
+  String fullName = '';
+  String userName = '';
+  String email = '';
+  String phoneNumber = '';
+  bool isSignedIn = false;
 
   @override
   void initState() {
     super.initState();
-    // Pre-fill data from user provider
-    final user = context.read<UserProvider>().currentUser;
-    _usernameController.text = user.username ?? '';
-    _fullNameController.text = user.fullName ?? '';
-    _phoneController.text = user.phone ?? '';
-    _emailController.text = user.email ?? '';
-    _addressController.text = user.address ?? '';
+    _loadProfileData(); // Muat data profil terenkripsi
+    _loadImage(); // Muat gambar profil dari SharedPreferences
   }
 
-  Future<void> pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
+  // Fungsi untuk menyimpan gambar
+  Future<void> _saveImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('imagePath', _imageFile);
+  }
 
-    if (pickedFile != null) {
-      setState(() {
-        profileImage = pickedFile.path;
-      });
+  // Fungsi untuk memuat gambar dari SharedPreferences
+  Future<void> _loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _imageFile = prefs.getString('imagePath') ?? '';
+    });
+  }
+
+  // Fungsi untuk memilih gambar dari kamera/galeri
+  Future<void> _getImage(ImageSource source) async {
+    if (kIsWeb && source == ImageSource.camera) {
+      debugPrint('Kamera tidak didukung di Web.');
+      return;
+    }
+    try {
+      final pickedFile = await picker.pickImage(
+        source: source,
+        maxHeight: 720,
+        maxWidth: 720,
+        imageQuality: 80,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = pickedFile.path;
+        });
+        _saveImage();
+      } else {
+        debugPrint('Tidak ada gambar yang dipilih.');
+      }
+    } catch (e) {
+      debugPrint('Kesalahan saat memilih gambar: $e');
     }
   }
 
-  void showImagePickerOptions() {
+  // Modal untuk memilih kamera/galeri
+  void _showPicker() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        return Container(
+          color: Colors.indigo[50],
+          child: Wrap(
             children: [
               ListTile(
-                leading: Icon(Icons.camera_alt, size: 20),
-                title: Text('Kamera'),
+                leading: const Icon(Icons.camera_enhance, color: Colors.blueGrey),
+                title: const Text('Kamera'),
                 onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                  _getImage(ImageSource.camera);
                 },
               ),
               ListTile(
-                leading: Icon(Icons.photo_library, size: 20),
-                title: Text('Galeri'),
+                leading: const Icon(Icons.photo_library, color: Colors.blueGrey),
+                title: const Text('Galeri'),
                 onTap: () {
-                  Navigator.pop(context);
-                  pickImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                  _getImage(ImageSource.gallery);
                 },
               ),
             ],
@@ -77,49 +104,56 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _fullNameController.dispose();
-    _phoneController.dispose();
-    _emailController.dispose();
-    _addressController.dispose();
-    super.dispose();
+  // Fungsi untuk memuat data profil terenkripsi
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? keyString = prefs.getString('key');
+    final String? ivString = prefs.getString('iv');
+
+    if (keyString != null && ivString != null) {
+      final key = encrypt.Key.fromBase64(keyString);
+      final iv = encrypt.IV.fromBase64(ivString);
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      setState(() {
+        fullName = encrypter.decrypt64(prefs.getString('name') ?? '', iv: iv);
+        userName = encrypter.decrypt64(prefs.getString('username') ?? '', iv: iv);
+        email = encrypter.decrypt64(prefs.getString('email') ?? '', iv: iv);
+        phoneNumber = encrypter.decrypt64(prefs.getString('notelpon') ?? '', iv: iv);
+        isSignedIn = fullName.isNotEmpty && userName.isNotEmpty;
+      });
+    } else {
+      setState(() {
+        isSignedIn = false;
+      });
+    }
+  }
+
+  // Fungsi untuk sign out
+  Future<void> signOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      isSignedIn = false;
+      fullName = '';
+      userName = '';
+      email = '';
+      phoneNumber = '';
+      _imageFile = '';
+    });
+    Navigator.pushReplacementNamed(context, '/signin');
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<UserProvider>();
-
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
-          },
-        ),
-        title: Text(
-          'Akun Saya',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: Stack(
         children: [
           Container(
-            height: 80,
+            height: 100,
             width: double.infinity,
             decoration: BoxDecoration(
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: NetworkImage(
                   'https://akcdn.detik.net.id/visual/2023/09/13/apple-watch_169.png?w=400&q=90',
                 ),
@@ -128,92 +162,66 @@ class ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 100, left: 16, right: 16),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                // Gambar Profil
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 80),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: profileImage.startsWith('images/')
-                              ? AssetImage(profileImage) as ImageProvider
-                              : FileImage(File(profileImage)),
-                        ),
-                        if (isSignedIn)
-                          CircleAvatar(
-                            radius: 14,
-                            backgroundColor: Colors.black,
-                            child: IconButton(
-                              onPressed: showImagePickerOptions,
-                              icon: Icon(Icons.edit, color: Colors.white, size: 12),
-                            ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blueGrey, width: 2),
+                            shape: BoxShape.circle,
                           ),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: _imageFile.isNotEmpty
+                                ? (kIsWeb
+                                ? NetworkImage(_imageFile)
+                                : FileImage(File(_imageFile))) as ImageProvider
+                                : const AssetImage('images/placeholder_image.png'),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.camera_alt_outlined, color: Colors.blueGrey),
+                          onPressed: _showPicker,
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Divider(color: Colors.blueGrey[100], thickness: 1),
-                  buildTextField('Username', Icons.account_circle, _usernameController),
-                  buildTextField('Nama Lengkap', Icons.person, _fullNameController),
-                  buildTextField('No. Handphone', Icons.phone, _phoneController),
-                  buildTextField('Email', Icons.email, _emailController),
-                  buildTextField('Alamat', Icons.home, _addressController),
-                  SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Update user profile in provider
-                      userProvider.updateProfile(
-                        username: _usernameController.text,
-                        fullName: _fullNameController.text,
-                        phone: _phoneController.text,
-                        email: _emailController.text,
-                        address: _addressController.text,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Profil berhasil diperbarui!')),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Colors.blueGrey,
-                    ),
-                    child: Text(
-                      'Simpan Profil',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SigninScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: Colors.blueGrey,
-                    ),
-                    child: Text(
-                      'Sign Out',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                // Informasi Profil
+                Divider(color: Colors.blueGrey),
+                _buildProfileRow('Nama', fullName, Icons.person),
+                Divider(color: Colors.blueGrey),
+                _buildProfileRow('Username', userName, Icons.account_box),
+                Divider(color: Colors.blueGrey),
+                _buildProfileRow('Email', email, Icons.email),
+                Divider(color: Colors.blueGrey),
+                _buildProfileRow('Telepon', phoneNumber, Icons.phone),
+                const SizedBox(height: 20),
+                // Tombol Sign In/Out
+                isSignedIn
+                    ? TextButton(
+                  onPressed: signOut,
+                  child: const Text('Sign Out'),
+                )
+                    : ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SigninScreen()),
+                    );
+                  },
+                  child: const Text('Sign In'),
+                ),
+              ],
             ),
           ),
         ],
@@ -221,19 +229,25 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildTextField(String label, IconData icon, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+  // Widget untuk membuat baris profil
+  Widget _buildProfileRow(String label, String value, IconData icon) {
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 3,
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.blueGrey),
+              const SizedBox(width: 8),
+              Text(label,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ],
           ),
-          prefixIcon: Icon(icon, size: 20),
         ),
-      ),
+        Expanded(
+          child: Text(': $value', style: const TextStyle(fontSize: 18)),
+        ),
+      ],
     );
   }
 }
