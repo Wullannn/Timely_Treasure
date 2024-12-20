@@ -10,6 +10,24 @@ class CartProvider extends ChangeNotifier {
     _cartItems.add(item);
     notifyListeners();
   }
+  void removeItem(CartItem item) {
+    _cartItems.remove(item);
+    notifyListeners();
+  }
+  void increaseItemQuantity(CartItem item) {
+    item.quantity += 1;
+    notifyListeners();
+  }
+  void decreaseItemQuantity(CartItem item) {
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      // Logika jika jumlah minimal adalah 1
+      debugPrint('Jumlah tidak boleh kurang dari 1');
+    }
+    notifyListeners();
+  }
+
 
   void toggleItemSelection(CartItem item) {
     final index = _cartItems.indexOf(item);

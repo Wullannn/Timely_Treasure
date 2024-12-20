@@ -45,6 +45,20 @@ class CartScreen extends StatelessWidget {
                   onCheckboxChanged: () {
                     cartProvider.toggleItemSelection(item);
                   },
+                  onDeletePressed: () {
+                    cartProvider.removeItem(item);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${item.name} telah dihapus dari keranjang!'),
+                      ),
+                    );
+                  },
+                  onIncreaseQuantity: () {
+                    cartProvider.increaseItemQuantity(item);
+                  },
+                  onDecreaseQuantity: () {
+                    cartProvider.decreaseItemQuantity(item);
+                  },
                 );
               },
             ),

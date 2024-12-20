@@ -3,6 +3,7 @@ class CartItem {
   final String price;
   final String imageAsset;
   bool isSelected;
+  int quantity;
 
   var harga;
 
@@ -11,5 +12,6 @@ class CartItem {
     required this.price,
     required this.imageAsset,
     this.isSelected = false,
+    this.quantity = 1,
   });
 }
