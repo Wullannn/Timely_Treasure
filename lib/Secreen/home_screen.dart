@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jam/Secreen/search_screen.dart';
-import 'package:jam/Secreen/profile_screen.dart'; // Tambahkan halaman Profile
-import 'package:jam/Secreen/favorite_screen.dart'; // Tambahkan halaman Favorite
+import 'package:jam/Secreen/profile_screen.dart';
+import 'package:jam/Secreen/favorite_screen.dart';
+// import 'package:jam/Secreen/history_screen.dart'; // Import History Screen
 import '../models/product.dart';
 import 'cart_screen.dart';
 import 'detail_screen.dart';
+import 'orderhistory_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     HomePageContent(), // Halaman Home
     FavoritScreen(), // Halaman Favorite
     ProfileScreen(), // Halaman Profile
+    OrderHistoryScreen(orders: [],), // Halaman Order History
   ];
 
   void _onItemTapped(int index) {
@@ -59,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.brown,
+        selectedItemColor: Colors.blueGrey,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
         showUnselectedLabels: true,
@@ -75,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History', // New History Tab
           ),
         ],
       ),

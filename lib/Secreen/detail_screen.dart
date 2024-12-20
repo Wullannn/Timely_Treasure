@@ -49,7 +49,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: Colors.black,
+              color: Colors.red,
             ),
             onPressed: () {
               final favoritProvider =

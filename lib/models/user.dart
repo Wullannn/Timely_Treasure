@@ -7,5 +7,7 @@ class UserProfile {
     required this.fullName,
     required this.email,
     required this.phone,
+
   });
 }
+
