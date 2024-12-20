@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:jam/provider/favorit_provider.dart'; 
 import '../models/cart_item.dart';
 import '../models/product.dart';
+import '../provider/cart_provider.dart';
 import 'cart_screen.dart';
 import 'checkout.dart';
 
@@ -182,6 +183,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             .isNotEmpty;
 
                         if (!existingItem) {
+                          Product productList = widget.product;
+                          Provider.of<CartProvider>(context, listen: false).addItem(
+                            CartItem(
+                              name: productList.nama,
+                              price: widget.product.hargaDiskon.toString(),
+                              imageAsset: productList.imageAsset,
+                              isSelected: true,
+                            ),
+                          );
                           final newCartItem = CartItem(
                             name: widget.product.nama,
                             price: widget.product.hargaDiskon.toString(),
@@ -211,7 +221,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                CartScreen(cartItems: widget.cartItems),
+                                CartScreen(),
                           ),
                         );
                       },

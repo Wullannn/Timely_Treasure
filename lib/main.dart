@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jam/provider/cart_provider.dart';
 import 'package:jam/provider/provider.dart';
 import 'package:jam/provider/favorit_provider.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => FavoritProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
       child: const MyApp(),
     ),
