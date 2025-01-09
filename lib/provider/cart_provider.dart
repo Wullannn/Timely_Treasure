@@ -10,14 +10,17 @@ class CartProvider extends ChangeNotifier {
     _cartItems.add(item);
     notifyListeners();
   }
+
   void removeItem(CartItem item) {
     _cartItems.remove(item);
     notifyListeners();
   }
+
   void increaseItemQuantity(CartItem item) {
     item.quantity += 1;
     notifyListeners();
   }
+
   void decreaseItemQuantity(CartItem item) {
     if (item.quantity > 1) {
       item.quantity -= 1;
@@ -27,7 +30,6 @@ class CartProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
 
   void toggleItemSelection(CartItem item) {
     final index = _cartItems.indexOf(item);
@@ -44,9 +46,11 @@ class CartProvider extends ChangeNotifier {
     double total = 0;
     for (var item in _cartItems) {
       if (item.isSelected) {
+        // Mengalikan harga dengan quantity
         total += double.parse(
           item.price.replaceAll('.', '').replaceAll(',', '.'),
-        );
+        ) *
+            item.quantity;
       }
     }
     return total.toStringAsFixed(0).replaceAllMapped(
@@ -55,3 +59,4 @@ class CartProvider extends ChangeNotifier {
     );
   }
 }
+

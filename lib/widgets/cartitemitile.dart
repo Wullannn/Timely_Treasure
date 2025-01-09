@@ -81,7 +81,7 @@ class CartItemTile extends StatelessWidget {
             children: [
               // Tombol Kurangi
               IconButton(
-                icon: const Icon(Icons.remove_circle, color: Colors.blueGrey),
+                icon: const Icon(Icons.remove_circle, color: Colors.amber),
                 onPressed: onDecreaseQuantity, // Fungsi untuk mengurangi jumlah produk
               ),
               // Teks Jumlah
@@ -97,7 +97,7 @@ class CartItemTile extends StatelessWidget {
               ),
               // Tombol Tambah
               IconButton(
-                icon: const Icon(Icons.add_circle, color: Colors.blueGrey),
+                icon: const Icon(Icons.add_circle, color: Colors.amber),
                 onPressed: onIncreaseQuantity, // Fungsi untuk menambah jumlah produk
               ),
             ],

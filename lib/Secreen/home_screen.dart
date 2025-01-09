@@ -5,6 +5,7 @@ import 'package:jam/Secreen/favorite_screen.dart';
 // import 'package:jam/Secreen/history_screen.dart'; // Import History Screen
 import '../models/product.dart';
 import 'cart_screen.dart';
+
 import 'detail_screen.dart';
 import 'orderhistory_screen.dart';
 
@@ -34,10 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Timely Treasure'),
+        title: Text(
+          'Timely Treasure',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search, color: Colors.amber),
             onPressed: () {
               Navigator.push(
                 context,
@@ -46,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.shopping_cart, color: Colors.amber),
             onPressed: () {
               Navigator.push(
                 context,
@@ -56,16 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.black, // Latar belakang hitam
       ),
       body: _pages[_selectedIndex], // Tampilkan halaman berdasarkan indeks
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.blueGrey,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.amber, // Warna emas untuk tab aktif
+        unselectedItemColor: Colors.grey, // Warna abu-abu untuk tab tidak aktif
         showSelectedLabels: true,
         showUnselectedLabels: true,
+        backgroundColor: Colors.black, // Latar belakang hitam
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -115,6 +120,7 @@ class HomePageContent extends StatelessWidget {
             );
           },
           child: Card(
+            color: Colors.black, // Latar belakang kartu hitam
             margin: EdgeInsets.all(10),
             elevation: 5,
             child: Column(
@@ -137,13 +143,18 @@ class HomePageContent extends StatelessWidget {
                     children: [
                       Text(
                         produk.nama,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Teks putih
+                        ),
                       ),
                       SizedBox(height: 4),
                       Text(
                         'Harga: Rp${produk.harga.toString()}',
-                        style:
-                        TextStyle(decoration: TextDecoration.lineThrough),
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey, // Teks abu-abu terang
+                        ),
                       ),
                       Text(
                         'Harga Diskon: Rp${produk.hargaDiskon.toString()}',

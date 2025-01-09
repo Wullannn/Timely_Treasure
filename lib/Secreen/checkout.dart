@@ -19,7 +19,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   double get subtotal {
     return widget.selectedItems.fold(0.0, (sum, item) {
-      return sum + double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
+      return sum +
+          double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
     });
   }
 
@@ -35,9 +36,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Checkout'),
-        backgroundColor: Colors.blueGrey,
+        title: Text('Checkout',
+          style:  TextStyle(color: Colors.amber, // Warna emas untuk judul
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black, // Set app bar background to black
       ),
+      backgroundColor: Colors.white, // Set main background to black
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -45,23 +52,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Heading
-              Text(
-                'Checkout Details',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
-                ),
-              ),
-              SizedBox(height: 20),
-
-              // Shipping Address Section
               Card(
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+                color: Colors.grey[850],
+                // Dark background for cards
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -72,14 +70,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white, // White text for content
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Jl.Sudirman, Palembang', // Replace with dynamic data
+                        'Jl. Sudirman, Palembang', // Replace with dynamic data
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
+                          color: Colors.white, // White text for content
                         ),
                       ),
                     ],
@@ -93,33 +93,41 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.amber, // Golden color for section title
                 ),
               ),
               SizedBox(height: 8),
               ...widget.selectedItems.map(
-                    (item) => Card(
-                  elevation: 2,
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ListTile(
-                    leading: Image.asset(
-                      item.imageAsset,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(item.name),
-                    subtitle: Text(
-                      'Rp ${item.price}',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
+                    (item) =>
+                    Card(
+                      elevation: 2,
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      color: Colors.grey[850],
+                      // Dark background for cards
+                      child: ListTile(
+                        leading: Image.asset(
+                          item.imageAsset,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(
+                          item.name,
+                          style: TextStyle(
+                              color: Colors.white), // White text for item name
+                        ),
+                        subtitle: Text(
+                          'Rp ${item.price}',
+                          style: TextStyle(
+                            color: Colors.amber, // Golden color for price
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
               ),
               Divider(height: 30),
 
@@ -129,6 +137,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: Colors.amber, // Golden color for section title
                 ),
               ),
               SizedBox(height: 8),
@@ -137,15 +146,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 items: [
                   DropdownMenuItem(value: 'BCA', child: Text('Bank BCA')),
                   DropdownMenuItem(value: 'BRI', child: Text('Bank BRI')),
-                  DropdownMenuItem(value: 'Bank Syariah', child: Text('Bank Syariah')),
+                  DropdownMenuItem(
+                      value: 'Bank Syariah', child: Text('Bank Syariah')),
                 ],
                 onChanged: (value) {
                   setState(() {
                     _selectedPaymentMethod = value;
                   });
                 },
-                hint: Text('Pilih Metode Pembayaran'),
-                style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                hint: Text(
+                  'Pilih Metode Pembayaran',
+                  style: TextStyle(color: Colors.black), // White text for hint
+                ),
+                style: TextStyle(fontSize: 16, color: Colors.black),
                 isExpanded: true,
                 underline: Container(),
               ),
@@ -157,6 +170,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.amber, // Golden color for section title
                 ),
               ),
               SizedBox(height: 8),
@@ -166,6 +180,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
+                color: Colors.grey[850],
+                // Dark background for cards
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -174,24 +190,46 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Subtotal', style: TextStyle(fontSize: 16)),
-                          Text('Rp ${subtotal.toStringAsFixed(0)}', style: TextStyle(fontSize: 16, color: Colors.green)),
+                          Text(
+                            'Subtotal',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          Text(
+                            'Rp ${subtotal.toStringAsFixed(0)}',
+                            style: TextStyle(fontSize: 16, color: Colors.amber),
+                          ),
                         ],
                       ),
                       Divider(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Biaya Pengiriman', style: TextStyle(fontSize: 16)),
-                          Text('Rp ${shippingFee.toStringAsFixed(0)}', style: TextStyle(fontSize: 16, color: Colors.green)),
+                          Text(
+                            'Biaya Pengiriman',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          Text(
+                            'Rp ${shippingFee.toStringAsFixed(0)}',
+                            style: TextStyle(fontSize: 16, color: Colors.amber),
+                          ),
                         ],
                       ),
                       Divider(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Pembayaran', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text('Rp ${totalPrice.toStringAsFixed(0)}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green)),
+                          Text(
+                            'Total Pembayaran',
+                            style: TextStyle(fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            'Rp ${totalPrice.toStringAsFixed(0)}',
+                            style: TextStyle(fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amber),
+                          ),
                         ],
                       ),
                     ],
@@ -204,7 +242,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // Button background color
+                    backgroundColor: Colors.amber, // Golden color for button
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -222,19 +260,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       );
 
                       // Save the order (for simplicity, using a static list here)
-                      final List<Order> orders = [order]; // Ideally, use a provider or database
+                      final List<Order> orders = [
+                        order
+                      ]; // Ideally, use a provider or database
 
                       // Navigate to order history screen
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OrderHistoryScreen(orders: orders),
+                          builder: (context) =>
+                              OrderHistoryScreen(orders: orders),
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Silakan pilih metode pembayaran terlebih dahulu.'),
+                          content: Text(
+                              'Silakan pilih metode pembayaran terlebih dahulu.'),
                           duration: Duration(seconds: 2),
                         ),
                       );

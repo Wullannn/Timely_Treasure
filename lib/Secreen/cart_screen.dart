@@ -13,13 +13,15 @@ class CartScreen extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white, // Latar belakang utama menjadi hitam
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        // Ganti latar belakang AppBar menjadi hitam
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.amber),
+          // Warna emas untuk ikon kembali
           onPressed: () {
             Navigator.pop(context);
           },
@@ -27,7 +29,7 @@ class CartScreen extends StatelessWidget {
         title: const Text(
           "Keranjang",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.amber, // Warna emas untuk judul
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -49,7 +51,13 @@ class CartScreen extends StatelessWidget {
                     cartProvider.removeItem(item);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('${item.name} telah dihapus dari keranjang!'),
+                        content: Text(
+                          '${item.name} telah dihapus dari keranjang!',
+                          style: TextStyle(
+                              color: Colors.white), // Teks snack bar putih
+                        ),
+                        backgroundColor: Colors
+                            .black, // Background snack bar hitam
                       ),
                     );
                   },
@@ -73,9 +81,10 @@ class CartScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CheckoutScreen(
-                    selectedItems: selectedItems,
-                  ),
+                  builder: (context) =>
+                      CheckoutScreen(
+                        selectedItems: selectedItems,
+                      ),
                 ),
               );
             },

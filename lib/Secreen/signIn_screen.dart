@@ -3,7 +3,6 @@ import 'package:jam/Secreen/signUp_screen.dart';
 
 import 'home_screen.dart';
 
-
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
 
@@ -18,7 +17,13 @@ class _SigninScreenState extends State<SigninScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blueGrey, // Latar belakang biru abu-abu
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Colors.black87],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -27,58 +32,63 @@ class _SigninScreenState extends State<SigninScreen> {
                 // Logo dan Judul
                 Column(
                   children: [
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Timely Treasure',
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Color(0xFFFFD700), // Warna emas
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(
+                    const SizedBox(height: 5),
+                    const Text(
                       'Tempat Belanja Jam Tangan No. 1\n Barang Berkualitas dan Terpercaya',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: Colors.white, // Teks isi berwarna putih
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 // Form Login
                 Card(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
                   elevation: 5,
+                  color: Colors.black, // Warna latar belakang kartu hitam
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
                         // Input Email
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'No. Handphone/Username/Email',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.person),
+                            labelStyle: const TextStyle(color: Colors.white), // Label berwarna putih
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.person, color: Colors.white),
                           ),
+                          style: const TextStyle(color: Colors.white), // Teks input berwarna putih
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         // Input Password dengan fitur lihat password
                         TextField(
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.lock),
+                            labelStyle: const TextStyle(color: Colors.white), // Label berwarna putih
+                            border: const OutlineInputBorder(),
+                            prefixIcon: const Icon(Icons.lock, color: Colors.white),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _isPasswordVisible
                                     ? Icons.visibility
                                     : Icons.visibility_off,
+                                color: Colors.white, // Ikon berwarna putih
                               ),
                               onPressed: () {
                                 setState(() {
@@ -88,8 +98,9 @@ class _SigninScreenState extends State<SigninScreen> {
                             ),
                           ),
                           obscureText: !_isPasswordVisible,
+                          style: const TextStyle(color: Colors.white), // Teks input berwarna putih
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         // Tombol Login
                         SizedBox(
                           width: double.infinity,
@@ -103,25 +114,31 @@ class _SigninScreenState extends State<SigninScreen> {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueGrey,
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              backgroundColor: const Color(0xFFFFD700), // Warna emas
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'LOGIN',
-                              style: TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black, // Teks tombol berwarna hitam
+                              ),
                             ),
                           ),
                         ),
-                        Divider(thickness: 1, color: Colors.grey[300]),
-                        SizedBox(height: 10),
+                        Divider(thickness: 1, color: Colors.grey[700]), // Divider lebih gelap
+                        const SizedBox(height: 10),
                         // Tambahkan teks "Belum punya akun? Daftar di sini"
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Belum punya akun?"),
+                            const Text(
+                              "Belum punya akun?",
+                              style: TextStyle(color: Colors.white), // Teks berwarna putih
+                            ),
                             TextButton(
                               onPressed: () {
                                 // Arahkan ke halaman registrasi
@@ -131,9 +148,9 @@ class _SigninScreenState extends State<SigninScreen> {
                                       builder: (context) => SignUpScreen()),
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 "Daftar di sini",
-                                style: TextStyle(color: Colors.blueAccent),
+                                style: TextStyle(color: Color(0xFFFFD700)), // Teks berwarna emas
                               ),
                             ),
                           ],

@@ -10,7 +10,13 @@ class FavoritScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorit'),
+        title: Text('Favorit',
+          style: TextStyle(
+            color: Colors.amber, // Warna emas untuk judul
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.blueGrey,
       ),
       body: favoritItems.isEmpty

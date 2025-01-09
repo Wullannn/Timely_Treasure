@@ -41,8 +41,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    if (name.isNotEmpty && username.isNotEmpty && email.isNotEmpty && notelpon.isNotEmpty && password.isNotEmpty) {
-      final encrypt.Key key = encrypt.Key.fromUtf8('my32lengthsupersecretnooneknows!'); // Kunci tetap (32 karakter)
+    if (name.isNotEmpty && username.isNotEmpty && email.isNotEmpty &&
+        notelpon.isNotEmpty && password.isNotEmpty) {
+      final encrypt.Key key = encrypt.Key.fromUtf8(
+          'my32lengthsupersecretnooneknows!'); // Kunci tetap (32 karakter)
       final iv = encrypt.IV.fromLength(16);
       final encrypter = encrypt.Encrypter(encrypt.AES(key));
 
@@ -86,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue, Colors.blueGrey],
+            colors: [Colors.white, Colors.black87],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -96,6 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Card(
+                color: Colors.black,
                 elevation: 10,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -111,7 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey,
+                            color: Color(0xFFFFD700), // Warna emas
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -120,58 +123,98 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.blueGrey,
+                            color: Colors.white, // Warna teks isi putih
                           ),
                         ),
                         const SizedBox(height: 20),
                         // Nama Lengkap
                         TextFormField(
                           controller: _nameController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Nama Lengkap',
-                            border: OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.person),
+                            labelStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            prefixIcon: const Icon(
+                                Icons.person, color: Colors.grey),
                           ),
                         ),
                         const SizedBox(height: 20),
                         // Username
                         TextFormField(
                           controller: _usernameController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Username',
-                            border: OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.account_box),
+                            labelStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            prefixIcon:
+                            const Icon(Icons.account_box, color: Colors.grey),
                           ),
                         ),
                         const SizedBox(height: 20),
                         // Email
                         TextFormField(
                           controller: _emailController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Email',
-                            border: OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.email),
+                            labelStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            prefixIcon: const Icon(
+                                Icons.email, color: Colors.grey),
                           ),
                         ),
                         const SizedBox(height: 20),
                         // No Telpon
                         TextFormField(
                           controller: _nomorController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'No Telpon',
-                            border: OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.phone),
+                            labelStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            prefixIcon: const Icon(
+                                Icons.phone, color: Colors.grey),
                           ),
                         ),
                         const SizedBox(height: 20),
                         // Password
                         TextFormField(
                           controller: _passwordController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            errorText: _errorText.isNotEmpty ? _errorText : null,
+                            labelStyle: const TextStyle(color: Colors.grey),
+                            errorText: _errorText.isNotEmpty
+                                ? _errorText
+                                : null,
                             border: const OutlineInputBorder(),
-                            prefixIcon: const Icon(Icons.lock),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            prefixIcon: const Icon(
+                                Icons.lock, color: Colors.grey),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -182,6 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _obscurePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
+                                color: Colors.grey,
                               ),
                             ),
                           ),
@@ -191,33 +235,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // Tombol Register
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueGrey,
+                            backgroundColor: const Color(0xFFFFD700),
+                            // Warna emas
                             foregroundColor: Colors.black,
                           ),
                           onPressed: _signup,
-                          child: const Text('Register'),
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         // RichText untuk Login
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('Sudah punya akun?'),
+                            const Text(
+                              'Sudah punya akun?',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             const SizedBox(width: 5),
                             GestureDetector(
                               onTap: () {
-                                // Navigasi ke halaman login
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SigninScreen()
+                                    builder: (context) => const SigninScreen(),
                                   ),
                                 );
                               },
                               child: const Text(
                                 'Login di sini',
                                 style: TextStyle(
-                                  color: Colors.blueGrey,
+                                  color: Color(0xFFFFD700), // Warna emas
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

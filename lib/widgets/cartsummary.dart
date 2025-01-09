@@ -16,16 +16,16 @@ class CartSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: Colors.black, // Latar belakang utama hitam untuk kesan eksklusif
+        boxShadow: const [
           BoxShadow(
             color: Colors.grey,
             blurRadius: 5,
             offset: Offset(0, -2),
           ),
         ],
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
@@ -38,13 +38,15 @@ class CartSummary extends StatelessWidget {
               Text(
                 "$selectedItemCount barang",
                 style: const TextStyle(
-                  color: Colors.black54,
+                  color: Colors.white70,
+                  // Teks abu-abu terang untuk keterbacaan
                   fontSize: 16,
                 ),
               ),
               Text(
                 "Rp ${totalPrice.isEmpty ? '0' : totalPrice}",
                 style: const TextStyle(
+                  color: Colors.amber, // Warna emas untuk harga
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -57,7 +59,8 @@ class CartSummary extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
+                backgroundColor: Colors.amber,
+                // Tombol dengan warna emas/kuning keemasan
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -66,7 +69,8 @@ class CartSummary extends StatelessWidget {
               child: const Text(
                 "Checkout",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
+                  // Teks tombol berwarna hitam agar kontras dengan tombol emas
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),

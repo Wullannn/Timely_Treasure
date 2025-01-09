@@ -11,8 +11,14 @@ class OrderHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Riwayat Pemesanan'),
-        backgroundColor: Colors.blueGrey,
+        title: Text('Riwayat Pemesanan',
+          style: TextStyle(
+          color: Colors.amber, // Warna emas untuk judul
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+        backgroundColor: Colors.black,
       ),
       body: orders.isEmpty
           ? Center(child: Text('Belum ada riwayat pemesanan.'))
