@@ -16,11 +16,19 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   String? _selectedPaymentMethod;
+  double get itemCount {
+    // Menghitung total kuantitas semua item yang dipilih
+    return widget.selectedItems.fold(0, (sum, item) {
+      return sum + item.quantity; // Menambahkan kuantitas setiap item
+    }).toDouble();
+  }
 
   double get subtotal {
+    // Menghitung subtotal berdasarkan harga item yang dipilih dan kuantitasnya
     return widget.selectedItems.fold(0.0, (sum, item) {
       return sum +
-          double.parse(item.price.replaceAll('.', '').replaceAll(',', '.'));
+          double.parse(item.price.replaceAll('.', '').replaceAll(',', '.')) *
+              item.quantity;
     });
   }
 
@@ -29,6 +37,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   double get totalPrice {
+    // Menghitung total harga dengan mengalikan subtotal dengan itemCount dan menambahkan biaya pengiriman
     return subtotal + shippingFee;
   }
 
@@ -36,8 +45,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Checkout',
-          style:  TextStyle(color: Colors.amber, // Warna emas untuk judul
+        title: Text(
+          'Checkout',
+          style: TextStyle(
+            color: Colors.amber, // Warna emas untuk judul
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -98,36 +109,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               SizedBox(height: 8),
               ...widget.selectedItems.map(
-                    (item) =>
-                    Card(
-                      elevation: 2,
-                      margin: EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      color: Colors.grey[850],
-                      // Dark background for cards
-                      child: ListTile(
-                        leading: Image.asset(
-                          item.imageAsset,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                        title: Text(
-                          item.name,
-                          style: TextStyle(
-                              color: Colors.white), // White text for item name
-                        ),
-                        subtitle: Text(
-                          'Rp ${item.price}',
-                          style: TextStyle(
-                            color: Colors.amber, // Golden color for price
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                (item) => Card(
+                  elevation: 2,
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  color: Colors.grey[850],
+                  // Dark background for cards
+                  child: ListTile(
+                    leading: Image.asset(
+                      item.imageAsset,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(
+                      item.name,
+                      style: TextStyle(
+                          color: Colors.white), // White text for item name
+                    ),
+                    subtitle: Text(
+                      'Rp ${item.price}',
+                      style: TextStyle(
+                        color: Colors.amber, // Golden color for price
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
+                ),
               ),
               Divider(height: 30),
 
@@ -165,6 +175,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               SizedBox(height: 20),
 
               // Payment Breakdown Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Jumlah Item',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  Text(
+                    '$itemCount Item',
+                    style: TextStyle(fontSize: 16, color: Colors.amber),
+                  ),
+                ],
+              ),
+
               Text(
                 'Rincian Pembayaran:',
                 style: TextStyle(
@@ -220,13 +244,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           Text(
                             'Total Pembayaran',
-                            style: TextStyle(fontSize: 18,
+                            style: TextStyle(
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                           Text(
                             'Rp ${totalPrice.toStringAsFixed(0)}',
-                            style: TextStyle(fontSize: 18,
+                            style: TextStyle(
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.amber),
                           ),
