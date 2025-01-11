@@ -14,7 +14,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Variabel profil
   String _imageFile = '';
   final picker = ImagePicker();
 
@@ -28,17 +27,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _loadProfileData(); // Muat data profil terenkripsi
-    _loadImage(); // Muat gambar profil dari SharedPreferences
+    _loadProfileData();
+    _loadImage();
   }
 
-  // Fungsi untuk menyimpan gambar
   Future<void> _saveImage() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('imagePath', _imageFile);
   }
 
-  // Fungsi untuk memuat gambar dari SharedPreferences
   Future<void> _loadImage() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -46,7 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  // Fungsi untuk memilih gambar dari kamera/galeri
   Future<void> _getImage(ImageSource source) async {
     if (kIsWeb && source == ImageSource.camera) {
       debugPrint('Kamera tidak didukung di Web.');
@@ -72,7 +68,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Modal untuk memilih kamera/galeri
   void _showPicker() {
     showModalBottomSheet(
       context: context,
@@ -104,7 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Fungsi untuk memuat data profil terenkripsi
   Future<void> _loadProfileData() async {
     final prefs = await SharedPreferences.getInstance();
     final String? keyString = prefs.getString('key');
@@ -129,7 +123,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  // Fungsi untuk sign out
+  Future<void> _saveProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = encrypt.Key.fromSecureRandom(32);
+    final iv = encrypt.IV.fromSecureRandom(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+    prefs.setString('key', key.base64);
+    prefs.setString('iv', iv.base64);
+    prefs.setString('name', encrypter.encrypt(fullName, iv: iv).base64);
+    prefs.setString('username', encrypter.encrypt(userName, iv: iv).base64);
+    prefs.setString('email', encrypter.encrypt(email, iv: iv).base64);
+    prefs.setString('notelpon', encrypter.encrypt(phoneNumber, iv: iv).base64);
+  }
+
+  void _editData(String label, String currentValue, Function(String) onSave) {
+    TextEditingController controller = TextEditingController(text: currentValue);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit $label'),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: label,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                onSave(controller.text);
+                _saveProfileData();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> signOut() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -165,7 +207,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                // Gambar Profil
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
@@ -196,15 +237,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Informasi Profil
                 Divider(color: Colors.blueGrey),
-                _buildProfileRow('Nama', fullName, Icons.person),
+                _buildProfileRow('Nama :', fullName, Icons.person, (value) {
+                  setState(() {
+                    fullName = value;
+                  });
+                }),
                 Divider(color: Colors.blueGrey),
-                _buildProfileRow('Username', userName, Icons.account_box),
+                _buildProfileRow('Username :', userName, Icons.account_box, (value) {
+                  setState(() {
+                    userName = value;
+                  });
+                }),
                 Divider(color: Colors.blueGrey),
-                _buildProfileRow('Email', email, Icons.email),
+                _buildProfileRow('Email :', email, Icons.email, (value) {
+                  setState(() {
+                    email = value;
+                  });
+                }),
                 Divider(color: Colors.blueGrey),
-                _buildProfileRow('Telepon', phoneNumber, Icons.phone),
+                _buildProfileRow('Telepon :', phoneNumber, Icons.phone, (value) {
+                  setState(() {
+                    phoneNumber = value;
+                  });
+                }),
                 const SizedBox(height: 20),
                 // Tombol Sign In/Out
                 isSignedIn
@@ -216,7 +272,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const SigninScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const SigninScreen()),
                     );
                   },
                   child: const Text('Sign In'),
@@ -228,24 +285,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
   // Widget untuk membuat baris profil
-  Widget _buildProfileRow(String label, String value, IconData icon) {
+  Widget _buildProfileRow(
+      String label, String value, IconData icon, Function(String) onEdit) {
     return Row(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width / 3,
+        Expanded(
           child: Row(
             children: [
               Icon(icon, color: Colors.blueGrey),
               const SizedBox(width: 8),
-              Text(label,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                label,
+                style: const TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  value,
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ),
             ],
           ),
         ),
-        Expanded(
-          child: Text(': $value', style: const TextStyle(fontSize: 18)),
+        IconButton(
+          icon: const Icon(Icons.edit, color: Colors.blueGrey),
+          onPressed: () {
+            _editData(label, value, onEdit);
+          },
         ),
       ],
     );
