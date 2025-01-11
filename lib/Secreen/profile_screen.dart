@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          color: Colors.indigo[50],
+          color: Colors.black,
           child: Wrap(
             children: [
               ListTile(
