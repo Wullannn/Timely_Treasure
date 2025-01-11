@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
-// import '../screens/order_history_screen.dart';
 import 'orderhistory_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -17,14 +16,12 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   String? _selectedPaymentMethod;
   double get itemCount {
-    // Menghitung total kuantitas semua item yang dipilih
     return widget.selectedItems.fold(0, (sum, item) {
-      return sum + item.quantity; // Menambahkan kuantitas setiap item
+      return sum + item.quantity; 
     }).toDouble();
   }
 
   double get subtotal {
-    // Menghitung subtotal berdasarkan harga item yang dipilih dan kuantitasnya
     return widget.selectedItems.fold(0.0, (sum, item) {
       return sum +
           double.parse(item.price.replaceAll('.', '').replaceAll(',', '.')) *
@@ -33,11 +30,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   double get shippingFee {
-    return 5000.0; // Static shipping fee; you can modify it as needed
+    return 5000.0;
   }
 
   double get totalPrice {
-    // Menghitung total harga dengan mengalikan subtotal dengan itemCount dan menambahkan biaya pengiriman
     return subtotal + shippingFee;
   }
 
@@ -48,21 +44,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         title: Text(
           'Checkout',
           style: TextStyle(
-            color: Colors.amber, // Warna emas untuk judul
+            color: Colors.amber,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.black, // Set app bar background to black
+        backgroundColor: Colors.black, 
       ),
-      backgroundColor: Colors.white, // Set main background to black
+      backgroundColor: Colors.white, 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Heading
               Card(
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 10),
@@ -70,7 +65,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 color: Colors.grey[850],
-                // Dark background for cards
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -81,16 +75,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // White text for content
+                          color: Colors.white, 
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'Jl. Sudirman, Palembang', // Replace with dynamic data
+                        'Jl. Sudirman, Palembang', 
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.white, // White text for content
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -98,13 +92,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
 
-              // Selected Items Section
+         
               Text(
                 'Jam yang dipilih:',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber, // Golden color for section title
+                  color: Colors.amber,
                 ),
               ),
               SizedBox(height: 8),
@@ -116,7 +110,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   color: Colors.grey[850],
-                  // Dark background for cards
                   child: ListTile(
                     leading: Image.asset(
                       item.imageAsset,
@@ -127,12 +120,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     title: Text(
                       item.name,
                       style: TextStyle(
-                          color: Colors.white), // White text for item name
+                          color: Colors.white),
                     ),
                     subtitle: Text(
                       'Rp ${item.price}',
                       style: TextStyle(
-                        color: Colors.amber, // Golden color for price
+                        color: Colors.amber,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -141,13 +134,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               Divider(height: 30),
 
-              // Payment Method Section
               Text(
                 'Metode Pembayaran:',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber, // Golden color for section title
+                  color: Colors.amber, 
                 ),
               ),
               SizedBox(height: 8),
@@ -166,7 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 },
                 hint: Text(
                   'Pilih Metode Pembayaran',
-                  style: TextStyle(color: Colors.black), // White text for hint
+                  style: TextStyle(color: Colors.black),
                 ),
                 style: TextStyle(fontSize: 16, color: Colors.black),
                 isExpanded: true,
@@ -174,7 +166,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               SizedBox(height: 20),
 
-              // Payment Breakdown Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -194,7 +185,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber, // Golden color for section title
+                  color: Colors.amber,
                 ),
               ),
               SizedBox(height: 8),
@@ -205,7 +196,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 color: Colors.grey[850],
-                // Dark background for cards
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -264,11 +254,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               SizedBox(height: 20),
 
-              // Confirmation Button
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber, // Golden color for button
+                    backgroundColor: Colors.amber, 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -276,7 +265,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   onPressed: () {
                     if (_selectedPaymentMethod != null) {
-                      // Create the order and add to the order history
                       final order = Order(
                         items: widget.selectedItems,
                         shippingAddress: 'Jl. Sudirman, Palembang',
@@ -285,12 +273,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         orderDate: DateTime.now(),
                       );
 
-                      // Save the order (for simplicity, using a static list here)
                       final List<Order> orders = [
                         order
-                      ]; // Ideally, use a provider or database
+                      ]; 
 
-                      // Navigate to order history screen
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
