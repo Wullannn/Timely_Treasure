@@ -38,7 +38,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Jam Tangan Alba Fashion Wanita 100% Original Gray Leather AH8376 X1',
 
 
   ),
@@ -50,7 +50,7 @@ List<Product> productList = [
     rating: 4.9,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Jual Apple smart watch Series 9 45MM midnight',
   ),
   Product(
     nama: "Fossil",
@@ -60,7 +60,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description:'Jual Jam Tangan Fossil ES4141',
   ),
   Product(
     nama: "Alexandre Christie",
@@ -70,7 +70,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRAA CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'ALEXANDRE CHRISTIE PRIA AC 643 ROSE GOLD',
   ),
   Product(
     nama: "AudemarsPiguet",
@@ -80,7 +80,7 @@ List<Product> productList = [
     rating: 4.9,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'JAM TANGAN PRIA MODEL AP ROO GREY DIAL CHRONOGRAPH 43MM 2642 APF QUICK RELEASE ON RUBBER',
   ),
   Product(
     nama: "Bonia",
@@ -90,7 +90,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Bonia Tesoro BNB10435-2217',
   ),
   Product(
     nama: "Calvin klein",
@@ -100,7 +100,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'CALVIN KLEIN Addict Small Stainless Steel Bracelet K7W2S116',
   ),
   Product(
     nama: "Casio",
@@ -110,7 +110,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Casio Digital Jam Tangan Wanita Gold Rantai LA-670WGA-9A Original',
   ),
   Product(
     nama: "Casio Baby-G",
@@ -120,7 +120,7 @@ List<Product> productList = [
     rating: 4.9,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Baby-G GM-S Bracelet Series MSG-S200DG-4ADR Brand New Fullset with Tag 2 Years Warranty by Casio Color Rose Gold',
   ),
   Product(
     nama: "Jaeger LeCourte",
@@ -130,7 +130,7 @@ List<Product> productList = [
     rating: 4.83,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Jaeger-LeCoultre Master Ultra Thin Perpetual',
   ),
   Product(
     nama: "Michael Cors",
@@ -140,7 +140,7 @@ List<Product> productList = [
     rating: 4.82,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Jam Tangan Michael Kors Oversized Blair Pavé Silver-Tone Watch',
   ),
   Product(
     nama: "Patek Philipe",
@@ -150,7 +150,7 @@ List<Product> productList = [
     rating: 4.9,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Patek Philippe Annual Calendar Complications 5396R-015',
   ),
   Product(
     nama: "Timex",
@@ -160,7 +160,7 @@ List<Product> productList = [
     rating: 4.85,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'Timex Weekender TW2W86000 Indiglo White Dial Green Fabric Strap',
   ),
   Product(
     nama: "Tissot",
@@ -170,7 +170,7 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Dikirim',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: 'TISSOT SEASTAR 2000 PROFESSIONAL POWERMATIC 80 CERAMIC BEZEL ORIGINAL',
   ),
   Product(
     nama: "TisortT Touch",
@@ -180,6 +180,6 @@ List<Product> productList = [
     rating: 4.8,
     colors: [],
     status: 'Selesai',
-    description: 'JAM TANGAN PRIA ALEXANDRE CHRISTIE AC 6437 / AC6437 LEATHER ORIGINAL',
+    description: '',
   ),
 ];
